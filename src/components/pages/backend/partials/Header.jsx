@@ -1,34 +1,63 @@
-import { Moon, Settings } from 'lucide-react'
+import { Moon, Settings, Sun } from 'lucide-react'
 import React from 'react'
 
 const Header = () => {
+    const [isDark, setIsDark] = React.useState(
+        localStorage.getItem("theme") === "dark" ? true : false
+      );
+      const [theme, setTheme] = React.useState(localStorage.getItem("theme"));
+
+      const handleTheme = () => {
+        setIsDark(!isDark);
+        if (isDark) {
+          document.querySelector("html").classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        } else {
+          document.querySelector("html").classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        }
+      };
+
+      React.useEffect(() => {
+        function setThemeColor() {
+          const html = document.querySelector("html");
+          html.setAttribute("class", "");
+          html.classList.add(theme);
+          setTheme(localStorage.getItem("theme"));
+        }
+    
+        setThemeColor();
+      }, [theme]);
+    
   return (
     <>
-                        <header className="bg-secondary">
-                        <div className="flex justify-between items-center p-4">
-                            <div className="[&>*]:mb-0">
-                                <h4>Movies</h4>
-                                <p>List of Available Movies</p>
-                            </div>
+        <header className="bg-secondary">
+            <div className="flex justify-between items-center p-4">
+                 <div className="[&>*]:mb-0">
+                    <h4>Movies</h4>
+                    <p>List of Available Movies</p>
+                </div>
 
-                            <div className="flex items-center gap-6">                            
-                                <button className="h-[20px] w-[40px] bg-primary rounded-2xl border border-line px-[1px]">
-                                    <span className="size-[16px] rounded-full bg-secondary grid place-content-center">
-                                        <Moon size={14} stroke={"white"}/>
-                                    </span>
-                                </button>
-                                <button>
-                                    <Settings />
-                                </button>
+                <div className="flex items-center gap-6">                            
+                <button className="h-[20px] w-[40px] bg-primary rounded-2xl border border-line px-[1px] hover:border-accent transition-all duration-200"
+                onClick={handleTheme}>
+                     <span className={`${isDark ? "" : "translate-x-5"} size-[16px] rounded-full bg-secondary grid place-content-center transition-all duration-500`}>
+                        {isDark ? (<Sun size={14} stroke={"white"}/>) : (<Moon size={14} stroke={"black"}/>)}
+                            
+                    </span>
+                </button>
+                    <button>
+                         <Settings />
+                    </button>
 
-                                <button className="size-[30px] rounded-full bg-accent grid place-content-center text-white">
-                                    BM
-                                </button>
-                            </div>
+                    <button className="size-[30px] rounded-full bg-accent grid place-content-center text-white">
+                        BM
+                    </button>
+                </div>
 
 
-                        </div>
-                    </header>
+            </div>
+        </header>
     </>
   )
 }
