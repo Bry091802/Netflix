@@ -154,6 +154,9 @@
   .table-wrapper table tbody tr:nth-child(odd){
     @apply bg-primary;
   }
+  .table-wrapper table thead tr{
+    @apply bg-secondary;
+  }
 
   .table-action {
     @apply flex gap-2 justify-end;

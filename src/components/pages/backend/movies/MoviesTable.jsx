@@ -6,14 +6,37 @@ import { Archive, ArchiveRestore, FilePenLine, FileVideo, Trash2 } from 'lucide-
 import LoadMore from '../partials/LoadMore'
 import IconNoData from '../partials/IconNoData'
 import SpinnerTable from '../partials/spinners/SpinnerTable'
+import { StoreContext } from '@/components/store/storeContext'
+import { setIsAdd, setIsConfirm, setIsDelete, setIsView } from '@/components/store/storeAction'
+import ModalDelete from '../partials/modals/ModalDelete'
+import ModalConfirm from '../partials/modals/ModalConfirm'
 
 const MoviesTable = () => {
+const {store, dispatch} = React.useContext(StoreContext);
+
+const handleDelete = () => {
+    dispatch(setIsDelete(true));
+};
+const handleRestore = () => {
+    dispatch(setIsConfirm(true));
+};
+const handleArchive = () => {
+    dispatch(setIsConfirm(true));
+};
+const handleView = () => {
+    dispatch(setIsView(true));
+};
+const handleAdd = () => {
+    dispatch(setIsAdd(true));
+};
+
+
   return (
     <>
     <div className="p-4 bg-secondary rounded-md mt-10 border border-line relative">
                             {/* <SpinnerTable/> */}
                         <div className="table-wrapper custom-scroll">
-                            <TableLoader count={1} cols={4}/>
+                            {/* <TableLoader count={1} cols={4}/> */}
                             <table>
                                 <thead>
                                     <tr>
@@ -28,12 +51,12 @@ const MoviesTable = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    {/* <tr>
                                         <td colSpan={100}>
                                             <IconNoData/>
                                            
                                         </td>
-                                    </tr>
+                                    </tr> */}
                                     {/* <tr>
                                     <td colSpan={100}>
                                             
@@ -41,7 +64,7 @@ const MoviesTable = () => {
                                         </td>
                                     </tr> */}
                                 {Array.from(Array(3).keys()).map((i) => (
-                                <tr>
+                                <tr key={i}>
                                     <td>{i + 1}.</td>
                                     <td><Pills/></td>
                                     <td>Killer</td>
@@ -51,13 +74,14 @@ const MoviesTable = () => {
                                         <ul className="table-action">
                                             {true ? 
                                             (<>                                            
-                                                <li><button className="tooltip" data-tooltip="View"><FileVideo /></button></li>
-                                                <li><button className="tooltip" data-tooltip="Edit"><FilePenLine /></button></li>
-                                                <li><button className="tooltip" data-tooltip="Archive"><Archive /></button></li>
+                                                <li><button className="tooltip" data-tooltip="View" onClick={() => handleView()}><FileVideo /></button></li>
+                                                <li><button className="tooltip" data-tooltip="Edit" onClick={() => handleAdd()}><FilePenLine /></button></li>
+                                                <li><button className="tooltip" data-tooltip="Archive" onClick={() => handleArchive()}><Archive /></button></li>
                                             </>) : 
                                             (<>
-                                            <li><button className="tooltip" data-tooltip="Restore"><ArchiveRestore /></button></li>
-                                            <li><button className="tooltip" data-tooltip="Delete"><Trash2 /></button></li>
+                                            <li><button className="tooltip" data-tooltip="Restore" onClick={() => handleRestore()}><ArchiveRestore /></button></li>
+                                            <li>
+                                                <button className="tooltip" data-tooltip="Delete" onClick={handleDelete}><Trash2 /></button></li>
                                             </>)}
                                             
 
@@ -75,6 +99,8 @@ const MoviesTable = () => {
                             <LoadMore/>
                         </div>
                         </div>
+        {store.isDelete && <ModalDelete/>}
+        {store.isConfirm && <ModalConfirm/>}
     </>
   )
 }

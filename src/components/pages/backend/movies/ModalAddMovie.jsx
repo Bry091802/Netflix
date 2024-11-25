@@ -2,15 +2,22 @@ import React from 'react'
 import ModalWrapper from '../partials/modals/ModalWrapper'
 import { ImagePlusIcon, X } from 'lucide-react'
 import SpinnerButton from '../partials/spinners/SpinnerButton'
+import { StoreContext } from '@/components/store/storeContext'
+import { setIsAdd } from '@/components/store/storeAction'
 
 const ModalAddMovie = () => {
+  const {dispatch} = React.useContext(StoreContext);
+
+const handleClose = () => {
+    dispatch(setIsAdd(false));
+};
   return (
     <>
         <ModalWrapper>
             <div className="modal-side absolute top-0 right-0 bg-primary h-[100dvh] w-[300px] border-l border-line">
             <div className="modal-header p-4 flex justify-between items-center">
                 <h5 className='mb-0'>Add Movie</h5>
-                <button><X/></button>
+                <button onClick={handleClose}><X/></button>
             </div>
 
             <div className="modal-form  h-full max-h-[calc(100vh-56px)] grid grid-rows-[1fr,_auto]">
@@ -88,7 +95,7 @@ const ModalAddMovie = () => {
 
                 <div className="form-action flex p-4 justify-end gap-3">
                     <button className="btn btn-accent" ><SpinnerButton/>Save</button>
-                    <button className="btn btn-cancel"><SpinnerButton/>Cancel</button>
+                    <button className="btn btn-cancel" onClick={handleClose}><SpinnerButton/>Cancel</button>
                 </div>
             </div>
             </div>

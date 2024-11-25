@@ -1,7 +1,15 @@
 import { Archive, Info, X, XCircleIcon } from 'lucide-react'
 import ModalWrapper from './ModalWrapper'
+import { StoreContext } from '@/components/store/storeContext';
+import React from 'react';
+import { setError } from '@/components/store/storeAction';
 
 const ModalError = () => {
+  const {store, dispatch} = React.useContext(StoreContext);
+
+  const handleClose = () => {
+      dispatch(setError(false));
+  };
   return (
     <>
         <ModalWrapper>
@@ -12,7 +20,7 @@ const ModalError = () => {
                   <XCircleIcon className="text-alert mx-auto mb-4" size={40}/>
                   <h5>Server Error</h5>
                     <p className="my-5 text-center">Something went wrong, Please reload the page</p>
-                     <button className="btn btn-alert w-full flex justify-center">Okay</button>
+                     <button className="btn btn-alert w-full flex justify-center" onClick={handleClose}>Okay</button>
                 </div>
         </div>
         </ModalWrapper> 
