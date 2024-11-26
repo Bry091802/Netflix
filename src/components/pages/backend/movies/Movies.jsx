@@ -57,7 +57,7 @@ const handleAdd = () => {
         {store.success && <ToastSucess/>}
         
          {store.isAdd && <ModalAddMovie/>}
-        {store.isView && <ModalViewMovie/> }
+        
     </>
   );
 };

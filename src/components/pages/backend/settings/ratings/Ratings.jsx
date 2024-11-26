@@ -7,6 +7,7 @@ import { StoreContext } from '@/components/store/storeContext'
 import { setIsAdd, setIsConfirm, setIsDelete } from '@/components/store/storeAction'
 import ModalDelete from '../../partials/modals/ModalDelete'
 import ModalConfirm from '../../partials/modals/ModalConfirm'
+import ModalAddRatings from './ModalAddRatings'
 
 const Ratings = () => {
     const {store, dispatch} = React.useContext(StoreContext);
@@ -82,6 +83,7 @@ const handleAdd = () => {
                             </table>
                         </div>
                         </div>
+                        {store.isAdd && <ModalAddRatings/>}
                         {store.isDelete && <ModalDelete/>}
                         {store.isConfirm && <ModalConfirm/>}
     </>

@@ -10,9 +10,13 @@ import { StoreContext } from '@/components/store/storeContext'
 import { setIsAdd, setIsConfirm, setIsDelete, setIsView } from '@/components/store/storeAction'
 import ModalDelete from '../partials/modals/ModalDelete'
 import ModalConfirm from '../partials/modals/ModalConfirm'
+import { movies } from './datamovies'
+import ModalViewMovie from './ModalViewMovie';
 
 const MoviesTable = () => {
 const {store, dispatch} = React.useContext(StoreContext);
+const [movieInfo, setMovieInfo] = React.useState("")
+let counter = 1;
 
 const handleDelete = () => {
     dispatch(setIsDelete(true));
@@ -23,8 +27,9 @@ const handleRestore = () => {
 const handleArchive = () => {
     dispatch(setIsConfirm(true));
 };
-const handleView = () => {
+const handleView = (item) => {
     dispatch(setIsView(true));
+    setMovieInfo(item);
 };
 const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -63,18 +68,18 @@ const handleAdd = () => {
                                             <IconServerError/>
                                         </td>
                                     </tr> */}
-                                {Array.from(Array(3).keys()).map((i) => (
-                                <tr key={i}>
-                                    <td>{i + 1}.</td>
+                                {movies.map((item, key) => (                               
+                                 <tr key={key}>
+                                    <td>{counter++}.</td>
                                     <td><Pills/></td>
-                                    <td>Killer</td>
-                                    <td>1998</td>
-                                    <td>1hr 45mins</td>
+                                    <td>{item.movie_title}</td>
+                                    <td>{item.movie_year}</td>
+                                    <td>{item.movie_duration}</td>
                                     <td>
                                         <ul className="table-action">
-                                            {true ? 
+                                            {item.movie_is_active ? 
                                             (<>                                            
-                                                <li><button className="tooltip" data-tooltip="View" onClick={() => handleView()}><FileVideo /></button></li>
+                                                <li><button className="tooltip" data-tooltip="View" onClick={() => handleView(item)}><FileVideo /></button></li>
                                                 <li><button className="tooltip" data-tooltip="Edit" onClick={() => handleAdd()}><FilePenLine /></button></li>
                                                 <li><button className="tooltip" data-tooltip="Archive" onClick={() => handleArchive()}><Archive /></button></li>
                                             </>) : 
@@ -90,8 +95,9 @@ const handleAdd = () => {
 
                                         </ul>
                                     </td> 
-                                </tr>
-                                ))}
+                                </tr>))}
+
+                                
                                     
 
                                 </tbody>
@@ -99,6 +105,7 @@ const handleAdd = () => {
                             <LoadMore/>
                         </div>
                         </div>
+        {store.isView && <ModalViewMovie movieInfo={movieInfo}/> }
         {store.isDelete && <ModalDelete/>}
         {store.isConfirm && <ModalConfirm/>}
     </>
